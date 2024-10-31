@@ -5,8 +5,9 @@ import java.awt.*;
 public class CustomMenuBar extends MenuBar {
     public CustomMenuBar() {
         Menu filemenu = new Menu("File");
-        MenuComponent[] filemenuitems = {new MenuItem("New"), new MenuItem("New window"), new MenuSpace(),new MenuItem("Open"), new MenuItem("Save"), new MenuItem("Save as"), new MenuItem("Print")};
+        MenuComponent[] filemenuitems = {new MenuItem("New"), new MenuItem("New window"), new MenuSpace(),new MenuItem("Open"), new MenuItem("Save"), new MenuItem("Save as"), new MenuItem("Print"), new MenuItem("Close"), new MenuItem("Close Window"), new MenuSpace(), new MenuItem("Exit")};
         Menu editmenu = new Menu("Edit");
+        MenuComponent[] editmenuitems = {new MenuItem("Undo"), new MenuItem("Redo"), new MenuSpace()
         Menu selectionmenu = new Menu("Selection");
         Menu appearancemenu = new Menu("Appearance");
         Menu securitymenu = new Menu("Security");
