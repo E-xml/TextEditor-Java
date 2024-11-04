@@ -1,25 +1,24 @@
 package src;
 
 import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 
 public class CustomOptionPane extends Frame {
-
-    Button Yes = new Button("Yes");
-    Button No = new Button("No");
-    Yes.setBounds(20, 105, 100, 25);
-    No.setBounds(180, 105, 100, 25);
 
     public static final int YESNOOption = 0;
     public static final int YESNOCANCELOption = 1;
     public static final int OKOption = 2;
-    public static final int OKNOOption = 3;
+    public static final int OKCancelOption = 3;
     public static final int ANYWAYCANCELOption = 4;
-    public static final int CUSTOMOption = 5;
 
-    private String title = "Choosing option";
-    private String label = "Tlkqisnbutgorezuctgocrezoguoczreouygecdrtb nyhoe";
+    public static final int YESOption = 0;
+    public static final int NOOption = 1;
+    public static final int CancelOption = 2;
+    public static final int OKOption = 3;
+    public static final int ANYWAYOption = 4;
+
+    private String title = "CustomOptionPane.title";
+    private String label = "CustomOptionPane.label";
 
     public CustomOptionPane() {
         this.setSize(300, 200);
@@ -44,7 +43,7 @@ public class CustomOptionPane extends Frame {
         return FinalText;
     }
 
-    public void showChoiceDialog(int state) {
+    public int showChoiceDialog(int state) {
         final boolean[] isClosed = {false};
         this.addWindowListener(new WindowListener() {
             @Override
@@ -85,11 +84,69 @@ public class CustomOptionPane extends Frame {
         });
 
         switch (state) {
+            Label lbl = new Label(SplitText(label));
+            lbl.setBounds(10, 35, 300, 25);
+            this.add(lbl);
+            
+            Button Yes = new Button("Yes");
+            Yes.setBounds(20, 105, 100, 25);
+            Yes.addActionListener(new ActionListener()) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    return YESOption;
+                }
+            }
+            Button No = new Button("No");
+            No.setBounds(180, 105, 100, 25);
+            No.addActionListener(new ActionListener()) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    return NOOption;
+                }
+            }
+            
             case 0:
-                Label lbl = new Label(SplitText(label));
-                lbl.setBounds(10, 35, 300, 25);
-                this.add(lbl);
                 this.add(Yes);
+                this.add(No);
+                break;
+
+            case 1:
+                Button Yes = new Button("Yes");
+                Yes.setBounds(10, 105, 75, 25);
+                Button No = new Button("No");
+                No.setBounds(102, 105, 75, 25);
+                Button Cancel = new Button("Cancel");
+                Cancel.setBounds(215, 105, 75, 25);
+                this.add(Yes);
+                this.add(No);
+                this.add(Cancel);
+                break;
+
+            case 2:
+                Button OK = new Button("OK");
+                OK.setBounds(50, 105, 100, 25);
+                this.add(OK);
+                break;
+
+            case 3:
+                Button OK = new Button("OK");
+                Yes.setBounds(20, 105, 100, 25);
+                Button Cancel = new Button("Cancel");
+                No.setBounds(180, 105, 100, 25);
+                this.add(OK);
+                this.add(Cancel);
+                break;
+
+            case 4:
+                Button Anyway = new Button("Do anyway");
+                Yes.setBounds(20, 105, 100, 25);
+                Button Cancel = new Button("Cancel");
+                No.setBounds(180, 105, 100, 25);
+                this.add(Anyway);
+                this.add(Cancel);
+                break;
+
+            default: throw new IllegalArgumentException("State " + state + " doesn't exit");
         }
 
         this.setVisible(true);
