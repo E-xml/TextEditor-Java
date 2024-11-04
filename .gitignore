@@ -1,8 +1,11 @@
-# Compiled class file
+# Compiled class files
 *.class
 
-# Log file
+# Log files
 *.log
+
+# IML files
+*.iml
 
 # BlueJ files
 *.ctxt
@@ -23,12 +26,12 @@
 hs_err_pid*
 replay_pid*
 
-#Intellij Idea
+# Intellij Idea
 out/
 
-#Visual Studio Code
+# Visual Studio Code
 .vscode/
 
-#Eclipse
+# Eclipse
 *.classpath
 *.project
