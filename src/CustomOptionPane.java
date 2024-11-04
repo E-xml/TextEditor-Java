@@ -20,7 +20,9 @@ public class CustomOptionPane extends Frame {
     private String title = "CustomOptionPane.title";
     private String label = "CustomOptionPane.label";
 
-    public CustomOptionPane() {
+    public CustomOptionPane(String title, String label) {
+        this.title = title;
+        this.label = label;
         this.setSize(300, 200);
         this.setBackground(new Color(234, 234, 234));
         this.setResizable(false);
@@ -47,9 +49,7 @@ public class CustomOptionPane extends Frame {
         final boolean[] isClosed = {false};
         this.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent e) {
-
-            }
+            public void windowOpened(WindowEvent e) {}
 
             @Override
             public void windowClosing(WindowEvent e) {
@@ -58,29 +58,19 @@ public class CustomOptionPane extends Frame {
             }
 
             @Override
-            public void windowClosed(WindowEvent e) {
-
-            }
+            public void windowClosed(WindowEvent e) {}
 
             @Override
-            public void windowIconified(WindowEvent e) {
-
-            }
+            public void windowIconified(WindowEvent e) {}
 
             @Override
-            public void windowDeiconified(WindowEvent e) {
-
-            }
+            public void windowDeiconified(WindowEvent e) {}
 
             @Override
-            public void windowActivated(WindowEvent e) {
-
-            }
+            public void windowActivated(WindowEvent e) {}
 
             @Override
-            public void windowDeactivated(WindowEvent e) {
-
-            }
+            public void windowDeactivated(WindowEvent e) {}
         });
 
         switch (state) {
@@ -96,6 +86,7 @@ public class CustomOptionPane extends Frame {
                     return YESOption;
                 }
             }
+
             Button No = new Button("No");
             No.setBounds(180, 105, 100, 25);
             No.addActionListener(new ActionListener()) {
@@ -104,55 +95,111 @@ public class CustomOptionPane extends Frame {
                     return NOOption;
                 }
             }
-            
+
+            Button Yes1 = new Button("Yes");
+            Yes1.setBounds(10, 105, 75, 25);
+            Yes1.addActionListener(new ActionListener()) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    return YESOption;
+                }
+            }
+
+            Button No1 = new Button("No");
+            No1.setBounds(102, 105, 75, 25);
+            No1.addActionListener(new ActionListener()) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    return NOOption;
+                }
+            }
+
+            Button Cancel = new Button("Cancel");
+            Cancel.setBounds(215, 105, 75, 25);
+            Cancel.addActionListener(new ActionListener()) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    return CancelOption;
+                }
+            }
+
+            Button OK = new Button("OK");
+            OK.setBounds(50, 105, 100, 25);
+            OK.addActionListener(new ActionListener()) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    return OKOption;
+                }
+            }
+
+            Button OK1 = new Button("OK");
+            OK1.setBounds(20, 105, 100, 25);
+            OK1.addActionListener(new ActionListener()) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    return OKOption;
+                }
+            }
+
+            Button Cancel1 = new Button("Cancel");
+            Cancel1.setBounds(180, 105, 100, 25);
+            Cancel1.addActionListener(new ActionListener()) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    return CancelOption;
+                }
+            }
+
+            Button Anyway = new Button("Do anyway");
+            Anyway.setBounds(20, 105, 100, 25);
+            Anyway.addActionListener(new ActionListener()) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    return ANYWAYOption;
+                }
+            }
+
+            Button Cancel2 = new Button("Cancel");
+            Cancel2.setBounds(180, 105, 100, 25);
+            Cancel2.addActionListener(new ActionListener()) {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    return CancelOption;
+                }
+            }
+
             case 0:
                 this.add(Yes);
                 this.add(No);
                 break;
 
             case 1:
-                Button Yes = new Button("Yes");
-                Yes.setBounds(10, 105, 75, 25);
-                Button No = new Button("No");
-                No.setBounds(102, 105, 75, 25);
-                Button Cancel = new Button("Cancel");
-                Cancel.setBounds(215, 105, 75, 25);
-                this.add(Yes);
-                this.add(No);
+                this.add(Yes1);
+                this.add(No1);
                 this.add(Cancel);
                 break;
 
             case 2:
-                Button OK = new Button("OK");
-                OK.setBounds(50, 105, 100, 25);
                 this.add(OK);
                 break;
 
             case 3:
-                Button OK = new Button("OK");
-                Yes.setBounds(20, 105, 100, 25);
-                Button Cancel = new Button("Cancel");
-                No.setBounds(180, 105, 100, 25);
-                this.add(OK);
-                this.add(Cancel);
+                this.add(OK1);
+                this.add(Cancel1);
                 break;
 
             case 4:
-                Button Anyway = new Button("Do anyway");
-                Yes.setBounds(20, 105, 100, 25);
-                Button Cancel = new Button("Cancel");
-                No.setBounds(180, 105, 100, 25);
                 this.add(Anyway);
                 this.add(Cancel);
                 break;
 
-            default: throw new IllegalArgumentException("State " + state + " doesn't exit");
+            default: throw new IllegalArgumentException("State " + state + " doesn't exit. Must be between 0 and 4");
         }
 
         this.setVisible(true);
 
         if (isClosed[0]) {
-            return;
+            return CancelOption;
         }
     }
 

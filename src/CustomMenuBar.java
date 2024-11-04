@@ -49,7 +49,11 @@ class CustomActionListener implements ActionListener {
         switch (name) {
             case "New":
                 if (!parent.isFileSaved()) {
-
+                    CustomOptionPane optionPane = new CustomOptionPane(
+                        if (optionPane.showChoiceDialog(1) == CustomOptionPane.YESOption) {
+                            
+                        }
+                    )
                 }
 
 
