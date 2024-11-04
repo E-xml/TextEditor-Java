@@ -82,8 +82,12 @@ public class CustomOptionPane extends Frame {
         switch (state) {
             case 0:
                 Label lbl = new Label(SplitText(label));
-                lbl.setBounds(10, 35, 300,25);
+                lbl.setBounds(10, 35, 300, 25);
                 this.add(lbl);
+                Button Yes = new Button("Yes");
+                Button No = new Button("No");
+                Yes.setBounds(20, 105, 100, 25);
+                No.setBounds(180, 105, 100, 25);
 
         }
 
