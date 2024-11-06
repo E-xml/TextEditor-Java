@@ -46,14 +46,19 @@ class CustomActionListener implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
+        CustomOptionPane optionPane = new CustomOptionPane();
         switch (name) {
             case "New":
                 if (!parent.isFileSaved()) {
-                    CustomOptionPane optionPane = new CustomOptionPane(
-                        if (optionPane.showChoiceDialog(1) == CustomOptionPane.YESOption) {
-                            
-                        }
-                    )
+                    optionPane.setTitle("Modications aren't saved");
+                    optionPane.setLabel("Your modifications aren't saved. Would you save them ?");
+                    switch(optionPane.showChoiceDialog(CustomOptionPane.YESNOCANCELOption)) {
+                        case CustomOptionPane.YES: assert true; break;
+                        case CustomOptionPane.NO: assert true; break;
+                        case CustomOptionPane.CANCEL: assert true; break;
+
+                    }
+
                 }
 
 
