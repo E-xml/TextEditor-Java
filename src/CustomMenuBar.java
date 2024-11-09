@@ -1,5 +1,6 @@
 package src;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -46,22 +47,40 @@ class CustomActionListener implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        CustomOptionPane optionPane = new CustomOptionPane();
         switch (name) {
             case "New":
                 if (!parent.isFileSaved()) {
-                    optionPane.setTitle("Modications aren't saved");
-                    optionPane.setLabel("Your modifications aren't saved. Would you save them ?");
-                    switch(optionPane.showChoiceDialog(CustomOptionPane.YESNOCANCELOption)) {
-                        case CustomOptionPane.YES: assert true; break;
-                        case CustomOptionPane.NO: assert true; break;
-                        case CustomOptionPane.CANCEL: assert true; break;
-
+                    switch (JOptionPane.showOptionDialog(parent, "The current file isn't saved, would save it ?", "Save ?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null)) {
+                        case JOptionPane.YES_OPTION: parent.SaveAs(); parent.textArea.setText(""); parent.OpenedFile = null; parent.TextContent = ""; break;
+                        case JOptionPane.NO_OPTION: parent.textArea.setText(""); parent.OpenedFile = null; parent.TextContent = ""; break;
+                        case JOptionPane.CANCEL_OPTION: break;
                     }
-
+                } else {
+                    parent.textArea.setText("");
+                }
+                parent.TextContent = "";
+                break;
+            case "Open":
+                if (!parent.isFileSaved()) {
+                    switch (JOptionPane.showOptionDialog(parent, "The current file isn't saved, would save it ?", "Save ?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null)) {
+                        case JOptionPane.YES_OPTION: parent.SaveAs(); parent.Open(); break;
+                        case JOptionPane.NO_OPTION: parent.textArea.setText(""); parent.OpenedFile = null; parent.TextContent = ""; break;
+                        case JOptionPane.CANCEL_OPTION: break;
+                    }
+                } else {
+                    parent.Open();
                 }
 
-
+                break;
+            case "Save":
+                if (parent.OpenedFile == null) {
+                    parent.SaveAs();
+                } else {
+                    parent.Save();
+                }
+                break;
+            case "Save as": parent.SaveAs(); break;
+            case "Print": parent.printText(); break;
             case "New window": new ExmlEditor(); break;
             case "Close window": parent.dispose(); break;
             case "Exit": System.exit(0);

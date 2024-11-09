@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TextEditor-Java:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TextEditor_Java_jar</output-path>
+    <root id="archive" name="TextEditor-Java.jar">
+      <element id="module-output" name="TextEditor-Java" />
+    </root>
+  </artifact>
+</component>

@@ -1,6 +1,6 @@
 package src;
 
-import java.awt.*;
+import javax.swing.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -16,11 +16,21 @@ public class CustomWindowListener implements WindowListener {
     }
 
     public void windowClosing(WindowEvent e) {
+        boolean CancelPressed = false;
+
         if (!window.isFileSaved()) {
-            System.out.println("Not saved");
+            switch (JOptionPane.showOptionDialog(window, "The current file isn't saved, would save it ?", "Save ?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null)) {
+                case JOptionPane.YES_OPTION: window.SaveAs(); window.textArea.setText(""); window.OpenedFile = null; window.TextContent = ""; break;
+                case JOptionPane.NO_OPTION: window.textArea.setText(""); window.OpenedFile = null; window.TextContent = ""; break;
+                case JOptionPane.CANCEL_OPTION: CancelPressed = true; break;
+            }
         }
 
-        window.dispose();
+        if (!CancelPressed) {
+            window.dispose();
+        } else {
+            CancelPressed = false;
+        }
     }
 
     public void windowClosed(WindowEvent e) {
