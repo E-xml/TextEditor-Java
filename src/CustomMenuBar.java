@@ -4,12 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class CustomMenuBar extends MenuBar {
     public CustomMenuBar(ExmlEditor parent) {
         Menu filemenu = new Menu("File");
-        MenuComponent[] filemenuitems = {new MenuItem("New"), new MenuItem("New window"), new MenuSpace(),new MenuItem("Open"), new MenuItem("Save"), new MenuItem("Save as"), new MenuItem("Print"), new MenuItem("Close"), new MenuItem("Close window"), new MenuSpace(), new MenuItem("Exit")};
+        MenuComponent[] filemenuitems = {new MenuItem("New", new MenuShortcut(KeyEvent.VK_N, false)), new MenuItem("New window"), new MenuSpace(),new MenuItem("Open", new MenuShortcut(KeyEvent.VK_O, false)), new MenuItem("Save", new MenuShortcut(KeyEvent.VK_S, false)), new MenuItem("Save as", new MenuShortcut(KeyEvent.VK_S, true)), new MenuItem("Print"), new MenuItem("Close window", new MenuShortcut(KeyEvent.VK_F4, true)), new MenuSpace(), new MenuItem("Exit", new MenuShortcut(KeyEvent.VK_F4, false))};
         Menu editmenu = new Menu("Edit");
+        MenuComponent[] editmenuitems = {new MenuItem("Undo", new MenuShortcut(KeyEvent.VK_Z, false)), new MenuItem("Redo", new MenuShortcut(KeyEvent.VK_Y, false)), new MenuSpace(),new MenuItem("Copy", new MenuShortcut(KeyEvent.VK_C, false)), new MenuItem("Cut", new MenuShortcut(KeyEvent.VK_X, false)), new MenuItem("Paste", new MenuShortcut(KeyEvent.VK_V, false)), new MenuSpace(), new MenuItem("Delete", new MenuShortcut(KeyEvent.VK_DELETE, false)), new MenuSpace(), new Menu("Insert"), new MenuItem("Replace", new MenuShortcut(KeyEvent.VK_R, false))};
         Menu selectionmenu = new Menu("Selection");
         Menu appearancemenu = new Menu("Appearance");
         Menu securitymenu = new Menu("Security");
@@ -18,8 +20,17 @@ public class CustomMenuBar extends MenuBar {
         for (MenuComponent menuComponent : filemenuitems) {
             if (menuComponent instanceof MenuSpace) {
                 filemenu.addSeparator();
-            } else { //Avoiding a ClassCastException
+            } else if (menuComponent instanceof MenuItem){ //Avoiding a ClassCastException
                 filemenu.add((MenuItem) menuComponent);
+                ((MenuItem) menuComponent).addActionListener(new CustomActionListener(((MenuItem) menuComponent).getLabel(), parent));
+            }
+        }
+
+        for (MenuComponent menuComponent : editmenuitems) {
+            if (menuComponent instanceof MenuSpace) {
+                editmenu.addSeparator();
+            } else if (menuComponent instanceof MenuItem){ //Avoiding a ClassCastException
+                editmenu.add((MenuItem) menuComponent);
                 ((MenuItem) menuComponent).addActionListener(new CustomActionListener(((MenuItem) menuComponent).getLabel(), parent));
             }
         }
@@ -58,8 +69,10 @@ class CustomActionListener implements ActionListener {
                 } else {
                     parent.textArea.setText("");
                 }
+                parent.setTitle("Notepad - Untitled");
                 parent.TextContent = "";
                 break;
+            case "New window": new ExmlEditor(); break;
             case "Open":
                 if (!parent.isFileSaved()) {
                     switch (JOptionPane.showOptionDialog(parent, "The current file isn't saved, would save it ?", "Save ?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null)) {
@@ -80,10 +93,42 @@ class CustomActionListener implements ActionListener {
                 }
                 break;
             case "Save as": parent.SaveAs(); break;
-            case "Print": parent.printText(); break;
-            case "New window": new ExmlEditor(); break;
-            case "Close window": parent.dispose(); break;
-            case "Exit": System.exit(0);
+            case "Print":
+                if (parent.OpenedFile == null) {
+                    parent.SaveAs();
+                } else {
+                    parent.Save();
+                }
+                parent.print();
+                break;
+            case "Close window":
+                if (!parent.isFileSaved()) {
+                    switch (JOptionPane.showOptionDialog(parent, "The current file isn't saved, would save it ?", "Save ?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null)) {
+                        case JOptionPane.YES_OPTION: parent.SaveAs(); break;
+                        case JOptionPane.NO_OPTION: parent.dispose(); break;
+                        case JOptionPane.CANCEL_OPTION: break;
+                    }
+                } else {
+                    parent.dispose();
+                }
+                break;
+            case "Exit":
+                if (!parent.isFileSaved()) {
+                    switch (JOptionPane.showOptionDialog(parent, "The current file isn't saved, would save it ?", "Save ?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null)) {
+                        case JOptionPane.YES_OPTION: parent.SaveAs(); System.exit(0); break;
+                        case JOptionPane.NO_OPTION: System.exit(0); break;
+                        case JOptionPane.CANCEL_OPTION: break;
+                    }
+                } else {
+                    System.exit(0);
+                }
+
+            case "Undo": parent.Undo(); break;
+            case "Redo": parent.Redo(); break;
+            case "Copy" : parent.Copy(); break;
+            case "Cut" : parent.Cut(); break;
+            case "Paste" : parent.Paste(); break;
+            case "Delete" : parent.Delete(); break;
             default: throw new IllegalArgumentException("You might have forget to update this block");
         }
     }

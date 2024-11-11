@@ -47,5 +47,9 @@ public class CustomKeyListener implements KeyListener {
             }
             flagA = false;
         }
+
+        if (e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_COMMA || e.getKeyCode() == KeyEvent.VK_PERIOD) {
+            window.AppendText();
+        }
     }
 }

@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="TextEditor-Java:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/TextEditor_Java_jar</output-path>
+  <artifact type="jar" name="Indev 1.0">
+    <output-path>$PROJECT_DIR$/out/artifacts/Indev_1_0</output-path>
     <root id="archive" name="TextEditor-Java.jar">
       <element id="module-output" name="TextEditor-Java" />
     </root>
