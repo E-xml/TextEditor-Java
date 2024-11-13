@@ -11,7 +11,7 @@ public class CustomMenuBar extends MenuBar {
         Menu filemenu = new Menu("File");
         MenuComponent[] filemenuitems = {new MenuItem("New", new MenuShortcut(KeyEvent.VK_N, false)), new MenuItem("New window"), new MenuSpace(),new MenuItem("Open", new MenuShortcut(KeyEvent.VK_O, false)), new MenuItem("Save", new MenuShortcut(KeyEvent.VK_S, false)), new MenuItem("Save as", new MenuShortcut(KeyEvent.VK_S, true)), new MenuItem("Print"), new MenuItem("Close window", new MenuShortcut(KeyEvent.VK_F4, true)), new MenuSpace(), new MenuItem("Exit", new MenuShortcut(KeyEvent.VK_F4, false))};
         Menu editmenu = new Menu("Edit");
-        MenuComponent[] editmenuitems = {new MenuItem("Undo", new MenuShortcut(KeyEvent.VK_Z, false)), new MenuItem("Redo", new MenuShortcut(KeyEvent.VK_Y, false)), new MenuSpace(),new MenuItem("Copy", new MenuShortcut(KeyEvent.VK_C, false)), new MenuItem("Cut", new MenuShortcut(KeyEvent.VK_X, false)), new MenuItem("Paste", new MenuShortcut(KeyEvent.VK_V, false)), new MenuSpace(), new MenuItem("Delete", new MenuShortcut(KeyEvent.VK_DELETE, false)), new MenuSpace(), new Menu("Insert"), new MenuItem("Replace", new MenuShortcut(KeyEvent.VK_R, false))};
+        MenuComponent[] editmenuitems = {new MenuItem("Undo", new MenuShortcut(KeyEvent.VK_Z, false)), new MenuItem("Redo", new MenuShortcut(KeyEvent.VK_Y, false)), new MenuSpace(),new MenuItem("Copy", new MenuShortcut(KeyEvent.VK_C, false)), new MenuItem("Cut", new MenuShortcut(KeyEvent.VK_X, false)), new MenuItem("Paste", new MenuShortcut(KeyEvent.VK_V, false)), new MenuItem("Delete", new MenuShortcut(KeyEvent.VK_DELETE, false)), new MenuSpace(), new MenuItem("Insert here"), new MenuItem("Insert values"), new MenuSpace(), new MenuItem("Replace", new MenuShortcut(KeyEvent.VK_R, false))};
         Menu selectionmenu = new Menu("Selection");
         Menu appearancemenu = new Menu("Appearance");
         Menu securitymenu = new Menu("Security");
@@ -20,18 +20,18 @@ public class CustomMenuBar extends MenuBar {
         for (MenuComponent menuComponent : filemenuitems) {
             if (menuComponent instanceof MenuSpace) {
                 filemenu.addSeparator();
-            } else if (menuComponent instanceof MenuItem){ //Avoiding a ClassCastException
+            } else if (menuComponent instanceof MenuItem) {
                 filemenu.add((MenuItem) menuComponent);
-                ((MenuItem) menuComponent).addActionListener(new CustomActionListener(((MenuItem) menuComponent).getLabel(), parent));
+                ((MenuItem) menuComponent).addActionListener(new CustomActionListener(((MenuItem) menuComponent), parent));
             }
         }
 
         for (MenuComponent menuComponent : editmenuitems) {
             if (menuComponent instanceof MenuSpace) {
                 editmenu.addSeparator();
-            } else if (menuComponent instanceof MenuItem){ //Avoiding a ClassCastException
+            } else if (menuComponent instanceof MenuItem) {
                 editmenu.add((MenuItem) menuComponent);
-                ((MenuItem) menuComponent).addActionListener(new CustomActionListener(((MenuItem) menuComponent).getLabel(), parent));
+                ((MenuItem) menuComponent).addActionListener(new CustomActionListener(((MenuItem) menuComponent), parent));
             }
         }
         this.add(filemenu);
@@ -50,15 +50,15 @@ class MenuSpace extends MenuComponent {
 
 class CustomActionListener implements ActionListener {
     ExmlEditor parent = null;
-    String name = "";
+    MenuItem menuItem = null;
 
-    public CustomActionListener(String name, ExmlEditor parent) {
-        this.name = name;
+    public CustomActionListener(MenuItem menuItem, ExmlEditor parent) {
+        this.menuItem = menuItem;
         this.parent = parent;
     }
 
     public void actionPerformed(ActionEvent e) {
-        switch (name) {
+        switch (menuItem.getLabel()) {
             case "New":
                 if (!parent.isFileSaved()) {
                     switch (JOptionPane.showOptionDialog(parent, "The current file isn't saved, would save it ?", "Save ?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null)) {
@@ -77,7 +77,7 @@ class CustomActionListener implements ActionListener {
                 if (!parent.isFileSaved()) {
                     switch (JOptionPane.showOptionDialog(parent, "The current file isn't saved, would save it ?", "Save ?", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null)) {
                         case JOptionPane.YES_OPTION: parent.SaveAs(); parent.Open(); break;
-                        case JOptionPane.NO_OPTION: parent.textArea.setText(""); parent.OpenedFile = null; parent.TextContent = ""; break;
+                        case JOptionPane.NO_OPTION: parent.textArea.setText(""); parent.OpenedFile = null; parent.TextContent = ""; parent.Open(); break;
                         case JOptionPane.CANCEL_OPTION: break;
                     }
                 } else {
@@ -129,6 +129,28 @@ class CustomActionListener implements ActionListener {
             case "Cut" : parent.Cut(); break;
             case "Paste" : parent.Paste(); break;
             case "Delete" : parent.Delete(); break;
+            case "Insert here" :
+                String res = JOptionPane.showInputDialog(parent, "What would you insert ?");
+                if (res == null) {
+                    break;
+                } else {
+                    parent.Insert(res);
+                }
+                break;
+            case "Insert values" :
+                JPanel p = new JPanel();
+                p.setLayout(new GridLayout(1, 1));
+                String[] options = {"File name", "File size", "File path", "Epoch", "Time stamp", "Year", "Month", "Week", "Day", "Day of the week", "Hour", "Minute", "Second", "Random char", "Username", "Ipv4", "Ipv6"};
+                JComboBox<String> comboBox = new JComboBox<>(options);
+                p.add(comboBox);
+
+                if (JOptionPane.showConfirmDialog(null, p, "Veuillez sélectionner une option", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
+                    parent.Insert(parent.getKey((String) comboBox.getSelectedItem()));
+                }
+
+
+                break;
+
             default: throw new IllegalArgumentException("You might have forget to update this block");
         }
     }

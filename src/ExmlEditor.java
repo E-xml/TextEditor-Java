@@ -1,5 +1,6 @@
 package src;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -8,6 +9,7 @@ import java.awt.font.*;
 import java.awt.print.*;
 import java.io.*;
 import java.text.*;
+import java.time.Instant;
 import java.util.*;
 
 public class ExmlEditor extends Frame {
@@ -16,6 +18,8 @@ public class ExmlEditor extends Frame {
     String TextContent = "";
     public Stack<String> undoStack = new Stack<>();
     public Stack<String> redoStack = new Stack<>();
+    public String[] days = {"Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
+    public String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
     public ExmlEditor() {
         this.setTitle("Notepad - Untitled");
@@ -82,7 +86,9 @@ public class ExmlEditor extends Frame {
                 }
 
                 reader.close();
-                textArea.setText(text.substring(0, text.toString().length() - 1));
+                if (!text.toString().isEmpty()) {
+                    textArea.setText(text.substring(0, text.toString().length() - 1));
+                }
                 TextContent = textArea.getText();
             } catch (IOException e) {
                 e.fillInStackTrace();
@@ -180,25 +186,80 @@ public class ExmlEditor extends Frame {
             Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(textArea.getText()), null);
             textArea.setText("");
         }
+        AppendText();
     }
 
     public void Paste() {
         try {
             textArea.insert((String) Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor), textArea.getCaretPosition());
+            AppendText();
         } catch (UnsupportedFlavorException | IOException e) {
             e.fillInStackTrace();
         }
-    }
 
-    public static void main(String[] args) {
-        new ExmlEditor();
     }
 
     public void Delete() {
+        AppendText();
         if (!textArea.getSelectedText().isEmpty()) {
             textArea.setText(textArea.getText().substring(0, textArea.getSelectionStart()) + textArea.getText().substring(textArea.getSelectionEnd()));
         } else {
             textArea.setText("");
         }
+    }
+
+    public void Insert(String text) {
+        int pos = textArea.getCaretPosition();
+        textArea.insert(text, pos);
+        AppendText();
+        textArea.setCaretPosition(pos);
+    }
+
+    public String getKey(String key) {
+        switch (key) {
+            case "File name":
+                try {
+                    return OpenedFile.getName();
+                } catch (Exception e) {
+                    return "Unavailable";
+                }
+            case "File size":
+                return String.valueOf(textArea.getText().getBytes().length);
+            case "File path":
+                try {
+                    return OpenedFile.getAbsolutePath();
+                } catch (Exception e) {
+                    return "Unavailable";
+                }
+            case "Epoch":
+                return String.valueOf(Instant.now().getEpochSecond());
+            case "Time stamp":
+                return String.valueOf(Instant.now()).replace('T', ' ').replace('Z', (char) 0);
+            case "Year":
+                return String.valueOf(new GregorianCalendar().get(GregorianCalendar.YEAR));
+            case "Month":
+                return months[new GregorianCalendar().get(GregorianCalendar.MONTH)];
+            case "Week":
+                return String.valueOf(new GregorianCalendar().get(GregorianCalendar.WEEK_OF_YEAR));
+            case "Day":
+                return String.valueOf(new GregorianCalendar().get(GregorianCalendar.DAY_OF_MONTH));
+            case "Day of the week":
+                return days[new GregorianCalendar().get(GregorianCalendar.DAY_OF_WEEK)] + ", " + new GregorianCalendar().get(GregorianCalendar.DAY_OF_MONTH);
+            case "Hour":
+                return String.valueOf(new GregorianCalendar().get(GregorianCalendar.HOUR_OF_DAY));
+            case "Minute":
+                return String.valueOf(new GregorianCalendar().get(GregorianCalendar.MINUTE));
+            case "Second":
+                return String.valueOf(new GregorianCalendar().get(GregorianCalendar.SECOND));
+            case "Random char":
+                return String.valueOf((char) new Random().nextInt());
+
+        }
+
+        return null;
+    }
+
+    public static void main(String[] args) {
+        new ExmlEditor();
     }
 }
