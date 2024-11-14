@@ -1,6 +1,5 @@
 package src;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
@@ -8,6 +7,9 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.font.*;
 import java.awt.print.*;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
 import java.text.*;
 import java.time.Instant;
 import java.util.*;
@@ -253,13 +255,61 @@ public class ExmlEditor extends Frame {
                 return String.valueOf(new GregorianCalendar().get(GregorianCalendar.SECOND));
             case "Random char":
                 return String.valueOf((char) new Random().nextInt(0, 127));
+            case "Username" :
+                return System.getenv("USERNAME");
+            case "Ipv4":
+                try {
+                    URL url = new URI("https://api.ipify.org").toURL();
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String inputLine;
+                    StringBuilder response = new StringBuilder();
+
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+
+                    in.close();
+
+                    return response.toString();
+
+                } catch (Exception e) {
+                    e.fillInStackTrace();
+                }
+
+            case "Ipv6":
+                try {
+                    URL url = new URI("https://api6.ipify.org").toURL();
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String inputLine;
+                    StringBuilder response = new StringBuilder();
+
+                    while ((inputLine = in.readLine()) != null) {
+                        response.append(inputLine);
+                    }
+
+                    in.close();
+
+                    return response.toString();
+
+                } catch (Exception e) {
+                    e.fillInStackTrace();
+                }
 
         }
-
         return null;
     }
 
     public static void main(String[] args) {
         new ExmlEditor();
+    }
+
+    public void Replace(String oldSequence, String newSequence) {
+
     }
 }

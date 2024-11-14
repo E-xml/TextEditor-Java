@@ -144,13 +144,24 @@ class CustomActionListener implements ActionListener {
                 JComboBox<String> comboBox = new JComboBox<>(options);
                 p.add(comboBox);
 
-                if (JOptionPane.showConfirmDialog(null, p, "Veuillez sélectionner une option", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
+                if (JOptionPane.showConfirmDialog(null, p, "Select a value to insert", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
                     parent.Insert(parent.getKey((String) comboBox.getSelectedItem()));
                 }
 
 
                 break;
 
+            case "Replace":
+                JPanel p2 = new JPanel();
+                p2.setLayout(new GridLayout(2, 1, 20, 40));
+                JTextField oldSequence = new JTextField();
+                p2.add(oldSequence);
+                JTextField newSequence = new JTextField();
+                p2.add(newSequence);
+                if(JOptionPane.showConfirmDialog(null, p2, "Replace", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
+                    parent.Replace(oldSequence.getText(), newSequence.getText());
+                }
+                break;
             default: throw new IllegalArgumentException("You might have forget to update this block");
         }
     }
