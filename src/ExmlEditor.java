@@ -252,7 +252,7 @@ public class ExmlEditor extends Frame {
             case "Second":
                 return String.valueOf(new GregorianCalendar().get(GregorianCalendar.SECOND));
             case "Random char":
-                return String.valueOf((char) new Random().nextInt());
+                return String.valueOf((char) new Random().nextInt(0, 127));
 
         }
 
