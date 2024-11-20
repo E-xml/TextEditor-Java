@@ -301,11 +301,36 @@ public class ExmlEditor extends Frame {
         return null;
     }
 
-    public static void main(String[] args) {
-        new ExmlEditor();
+    public void Replace(String oldSequence, String newSequence) {
+        textArea.setText(textArea.getText().replace(oldSequence, newSequence));
     }
 
-    public void Replace(String oldSequence, String newSequence) {
+    public void SelectAll() {
+        textArea.setSelectionStart(0);
+        textArea.setSelectionEnd(textArea.getText().length());
+    }
 
+    public void CopyLineUp() {
+        System.out.println(textArea.getCaretPosition());
+    }
+
+    public void CopyLineDown() {
+
+    }
+
+    public void MoveLineUp() {
+
+    }
+
+    public void MoveLineDown() {
+
+    }
+
+    public void DuplicateLine() {
+
+    }
+
+    public static void main(String[] args) {
+        new ExmlEditor();
     }
 }

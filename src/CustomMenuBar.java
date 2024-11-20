@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.Objects;
 
 public class CustomMenuBar extends MenuBar {
     public CustomMenuBar(ExmlEditor parent) {
@@ -13,6 +14,7 @@ public class CustomMenuBar extends MenuBar {
         Menu editmenu = new Menu("Edit");
         MenuComponent[] editmenuitems = {new MenuItem("Undo", new MenuShortcut(KeyEvent.VK_Z, false)), new MenuItem("Redo", new MenuShortcut(KeyEvent.VK_Y, false)), new MenuSpace(),new MenuItem("Copy", new MenuShortcut(KeyEvent.VK_C, false)), new MenuItem("Cut", new MenuShortcut(KeyEvent.VK_X, false)), new MenuItem("Paste", new MenuShortcut(KeyEvent.VK_V, false)), new MenuItem("Delete", new MenuShortcut(KeyEvent.VK_DELETE, false)), new MenuSpace(), new MenuItem("Insert here"), new MenuItem("Insert values"), new MenuSpace(), new MenuItem("Replace", new MenuShortcut(KeyEvent.VK_R, false))};
         Menu selectionmenu = new Menu("Selection");
+        MenuComponent[] selectionmenuitems = {new MenuItem("Select All", new MenuShortcut(KeyEvent.VK_A, false)), new MenuSpace(), new MenuItem("Copy line up"), new MenuItem("Copy line down"), new MenuItem("Move line up"), new MenuItem("Move line down"), new MenuItem("Duplicate line")};
         Menu appearancemenu = new Menu("Appearance");
         Menu securitymenu = new Menu("Security");
         Menu toolsmenu = new Menu("Tools");
@@ -34,6 +36,16 @@ public class CustomMenuBar extends MenuBar {
                 ((MenuItem) menuComponent).addActionListener(new CustomActionListener(((MenuItem) menuComponent), parent));
             }
         }
+
+        for (MenuComponent menuComponent : selectionmenuitems) {
+            if (menuComponent instanceof MenuSpace) {
+                selectionmenu.addSeparator();
+            } else if (menuComponent instanceof MenuItem) {
+                selectionmenu.add((MenuItem) menuComponent);
+                ((MenuItem) menuComponent).addActionListener(new CustomActionListener(((MenuItem) menuComponent), parent));
+            }
+        }
+
         this.add(filemenu);
         this.add(editmenu);
         this.add(selectionmenu);
@@ -145,7 +157,7 @@ class CustomActionListener implements ActionListener {
                 p.add(comboBox);
 
                 if (JOptionPane.showConfirmDialog(null, p, "Select a value to insert", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
-                    parent.Insert(parent.getKey((String) comboBox.getSelectedItem()));
+                    parent.Insert(parent.getKey((String) Objects.requireNonNull(comboBox.getSelectedItem())));
                 }
 
 
@@ -161,6 +173,24 @@ class CustomActionListener implements ActionListener {
                 if(JOptionPane.showConfirmDialog(null, p2, "Replace", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.OK_OPTION) {
                     parent.Replace(oldSequence.getText(), newSequence.getText());
                 }
+                break;
+            case "Select All":
+                parent.SelectAll();
+                break;
+            case "Copy line up":
+                parent.CopyLineUp();
+                break;
+            case "Copy line down":
+                parent.CopyLineDown();
+                break;
+            case "Move line up":
+                parent.MoveLineUp();
+                break;
+            case "Move line down":
+                parent.MoveLineDown();
+                break;
+            case "Duplicate line":
+                parent.DuplicateLine();
                 break;
             default: throw new IllegalArgumentException("You might have forget to update this block");
         }
