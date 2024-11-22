@@ -14,8 +14,9 @@ public class CustomMenuBar extends MenuBar {
         Menu editmenu = new Menu("Edit");
         MenuComponent[] editmenuitems = {new MenuItem("Undo", new MenuShortcut(KeyEvent.VK_Z, false)), new MenuItem("Redo", new MenuShortcut(KeyEvent.VK_Y, false)), new MenuSpace(),new MenuItem("Copy", new MenuShortcut(KeyEvent.VK_C, false)), new MenuItem("Cut", new MenuShortcut(KeyEvent.VK_X, false)), new MenuItem("Paste", new MenuShortcut(KeyEvent.VK_V, false)), new MenuItem("Delete", new MenuShortcut(KeyEvent.VK_DELETE, false)), new MenuSpace(), new MenuItem("Insert here"), new MenuItem("Insert values"), new MenuSpace(), new MenuItem("Replace", new MenuShortcut(KeyEvent.VK_R, false))};
         Menu selectionmenu = new Menu("Selection");
-        MenuComponent[] selectionmenuitems = {new MenuItem("Select All", new MenuShortcut(KeyEvent.VK_A, false)), new MenuSpace(), new MenuItem("Copy line up"), new MenuItem("Copy line down"), new MenuItem("Move line up"), new MenuItem("Move line down"), new MenuItem("Duplicate line")};
+        MenuComponent[] selectionmenuitems = {new MenuItem("Select All", new MenuShortcut(KeyEvent.VK_A, false)), new MenuSpace(), new MenuItem("Copy line up"), new MenuItem("Copy line down"), new MenuItem("Duplicate line")};
         Menu appearancemenu = new Menu("Appearance");
+        MenuComponent[] apperancemenuitems = {new MenuItem("Select All", new MenuShortcut(KeyEvent.VK_A, false)), new MenuSpace(), new MenuItem("Copy line up"), new MenuItem("Copy line down"), new MenuItem("Duplicate line")};
         Menu securitymenu = new Menu("Security");
         Menu toolsmenu = new Menu("Tools");
         Menu helpmenu = new Menu("Help");
@@ -42,6 +43,15 @@ public class CustomMenuBar extends MenuBar {
                 selectionmenu.addSeparator();
             } else if (menuComponent instanceof MenuItem) {
                 selectionmenu.add((MenuItem) menuComponent);
+                ((MenuItem) menuComponent).addActionListener(new CustomActionListener(((MenuItem) menuComponent), parent));
+            }
+        }
+
+        for (MenuComponent menuComponent : apperancemenuitems) {
+            if (menuComponent instanceof MenuSpace) {
+                appearancemenu.addSeparator();
+            } else if (menuComponent instanceof MenuItem) {
+                appearancemenu.add((MenuItem) menuComponent);
                 ((MenuItem) menuComponent).addActionListener(new CustomActionListener(((MenuItem) menuComponent), parent));
             }
         }
@@ -182,12 +192,6 @@ class CustomActionListener implements ActionListener {
                 break;
             case "Copy line down":
                 parent.CopyLineDown();
-                break;
-            case "Move line up":
-                parent.MoveLineUp();
-                break;
-            case "Move line down":
-                parent.MoveLineDown();
                 break;
             case "Duplicate line":
                 parent.DuplicateLine();

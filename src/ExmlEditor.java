@@ -311,23 +311,30 @@ public class ExmlEditor extends Frame {
     }
 
     public void CopyLineUp() {
-        System.out.println(textArea.getCaretPosition());
+        int start = textArea.getText().lastIndexOf("\n", textArea.getCaretPosition() - 1) + 1;
+        int end = textArea.getText().indexOf("\n", textArea.getCaretPosition());
+        if (end == -1) end = textArea.getText().length();
+        if (!textArea.getText().substring(start, end).isEmpty()) {
+            textArea.insert(textArea.getText().substring(start, end) + "\n", start);
+        }
     }
 
     public void CopyLineDown() {
-
-    }
-
-    public void MoveLineUp() {
-
-    }
-
-    public void MoveLineDown() {
-
+        int start = textArea.getText().lastIndexOf("\n", textArea.getCaretPosition() - 1) + 1;
+        int end = textArea.getText().indexOf("\n", textArea.getCaretPosition());
+        if (end == -1) end = textArea.getText().length();
+        if (!textArea.getText().substring(start, end).isEmpty()) {
+            textArea.insert("\n" + textArea.getText().substring(start, end), end);
+        }
     }
 
     public void DuplicateLine() {
-
+        int start = textArea.getText().lastIndexOf("\n", textArea.getCaretPosition() - 1) + 1;
+        int end = textArea.getText().indexOf("\n", textArea.getCaretPosition());
+        if (end == -1) end = textArea.getText().length();
+        if (!textArea.getText().substring(start, end).isEmpty()) {
+            textArea.insert("\n" + textArea.getText().substring(start, end), end);
+        }
     }
 
     public static void main(String[] args) {
