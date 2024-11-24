@@ -1,5 +1,6 @@
 package src;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.font.*;
@@ -18,6 +19,7 @@ public class ExmlEditor extends Frame {
     public Stack<String> redoStack = new Stack<>();
     public String[] days = {"Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
     public String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+    public boolean wordWrap = false;
 
     public ExmlEditor() {
         this.setTitle("Notepad - Untitled");
@@ -335,6 +337,18 @@ public class ExmlEditor extends Frame {
         if (!textArea.getText().substring(start, end).isEmpty()) {
             textArea.insert("\n" + textArea.getText().substring(start, end), end);
         }
+    }
+
+    public void showTitleBar(boolean state) {
+        this.setUndecorated(!state);
+    }
+
+    public void BGColor() {
+        textArea.setBackground(JColorChooser.showDialog(this, "Select a color", textArea.getBackground()));
+    }
+
+    public void FGColor() {
+        textArea.setForeground(JColorChooser.showDialog(this, "Select a color", textArea.getForeground()));
     }
 
     public static void main(String[] args) {

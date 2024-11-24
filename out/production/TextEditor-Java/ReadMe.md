@@ -1,17 +1,8 @@
-# TextEditor (java) Modifications
+# Update alpha 1.0
 
-This is a simple text editor. Using it as a starting point, it needs a bunch of functionality additions.
+I modify a lot on your project, the code is kinda... mess but i'll try to update it sometimes. I wrote the code from the beginning by reprogramming the editor  you already did.
 
-## Additions
+I added a lot of features, here a complete list of them :
 
-Things to add:
-
-- find/replace text implementation
-- when you exit, you must NOT lose un-saved changes
-- add a new window, scrollable, with some editor help documentation in it.
-- implement Word Wrap (yeah, look it up)
-- add a font panel, so you can change the font you edit in.
-  - make sure not only new files are in th enew font, but existing windows too.
-- add a way to print the current file.
-- add a way to set the page in portrait or landscape mode
-- Make your About Dialog snazzy!
+- New
+- 
